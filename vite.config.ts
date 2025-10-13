@@ -8,8 +8,6 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
-    allowedHosts: ['.onrender.com', 'localhost'],
-
     fs: {
       allow: [
         path.resolve(__dirname, "."),
