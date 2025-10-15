@@ -32,6 +32,9 @@ export default defineConfig({
         // External dependencies that should not be bundled
         "express",
         "cors",
+        // Keep runtime-only SDKs external so they are required at runtime and not bundled
+        "openai",
+        "openai/*",
       ],
       output: {
         format: "es",
