@@ -1,7 +1,11 @@
 import { defineConfig } from "vite";
 import path from "path";
+import { fileURLToPath } from "url";
 
-// Server build configuration
+// Fix __dirname in ESM (important for Node 22+)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 export default defineConfig({
   build: {
     lib: {
@@ -15,7 +19,7 @@ export default defineConfig({
     ssr: true,
     rollupOptions: {
       external: [
-        // Node.js built-ins
+        /* --- Node.js built-ins --- */
         "fs",
         "path",
         "url",
@@ -29,24 +33,30 @@ export default defineConfig({
         "buffer",
         "querystring",
         "child_process",
-        // External dependencies that should not be bundled
+
+        /* --- External dependencies (should NOT be bundled) --- */
         "express",
         "cors",
+        "mongoose",
+        "dotenv",
+        "openai" // ✅ Added this line (fixes your Render build error)
       ],
       output: {
         format: "es",
         entryFileNames: "[name].mjs",
       },
     },
-    minify: false, // Keep readable for debugging
-    sourcemap: true,
+    minify: false,  // keeps it readable
+    sourcemap: true // helpful for debugging on Render
   },
+
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./client"),
       "@shared": path.resolve(__dirname, "./shared"),
     },
   },
+
   define: {
     "process.env.NODE_ENV": '"production"',
   },
