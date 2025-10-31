@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: drishti-web
+    env: node
+    plan: starter
+    region: oregon
+    branch: zen-zone
+    buildCommand: pnpm install && pnpm build
+    startCommand: node dist/server/node-build.mjs
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "10000"
+    secrets:
+      - name: MONGODB_URI
+      - name: OPENAI_API_KEY
+      - name: JWT_SECRET
